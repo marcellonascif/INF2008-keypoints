@@ -212,4 +212,5 @@ __marimo__/
 
 data*/
 !data/
+!dataset/
 models/
