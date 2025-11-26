@@ -21,9 +21,7 @@ class CocoEvaluator:
         self.coco_eval = {}
         for iou_type in iou_types:
             coco_eval = COCOeval(coco_gt, iouType=iou_type)
-            # OKS sigmas mais tolerantes para keypoints de vértebras
-            # Valores maiores = mais tolerância para distância dos keypoints
-            coco_eval.params.kpt_oks_sigmas = np.array([.1, .1])
+            coco_eval.params.kpt_oks_sigmas = np.array([.5, .5])
             self.coco_eval[iou_type] = coco_eval
 
         self.img_ids = []
