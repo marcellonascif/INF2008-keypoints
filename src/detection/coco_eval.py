@@ -5,7 +5,7 @@ from contextlib import redirect_stdout
 import numpy as np
 import pycocotools.mask as mask_util
 import torch
-import utils
+from . import utils
 from pycocotools.coco import COCO
 from pycocotools.cocoeval import COCOeval
 
@@ -20,7 +20,11 @@ class CocoEvaluator:
         self.iou_types = iou_types
         self.coco_eval = {}
         for iou_type in iou_types:
-            self.coco_eval[iou_type] = COCOeval(coco_gt, iouType=iou_type)
+            coco_eval = COCOeval(coco_gt, iouType=iou_type)
+            # OKS sigmas mais tolerantes para keypoints de vértebras
+            # Valores maiores = mais tolerância para distância dos keypoints
+            coco_eval.params.kpt_oks_sigmas = np.array([.1, .1])
+            self.coco_eval[iou_type] = coco_eval
 
         self.img_ids = []
         self.eval_imgs = {k: [] for k in iou_types}
